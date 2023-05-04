@@ -1,18 +1,18 @@
 const main = async () => {
   const [owner, superCoder] = await hre.ethers.getSigners();
   const domainContractFactory = await hre.ethers.getContractFactory("Domains");
-  const domainContract = await domainContractFactory.deploy("butter");
+  const domainContract = await domainContractFactory.deploy("uyo");
   await domainContract.deployed();
 
   console.log("Contract deployed to:", domainContract.address);
   //   console.log("Contract deployed by:", owner.address);
 
   // Let's be extra generous with our payment (we're paying more than required)
-  let txn = await domainContract.register("peanut",  {value: hre.ethers.utils.parseEther('2341')});
+  let txn = await domainContract.register("tetris",  {value: hre.ethers.utils.parseEther('2341')});
   await txn.wait();
 
-  // const domainAddress = await domainContract.getAddress("peanut");
-  // console.log("Owner of domain peanut:", domainAddress);
+  // const domainAddress = await domainContract.getAddress("tetris");
+  // console.log("Owner of domain tetris:", domainAddress);
 
   const balance = await hre.ethers.provider.getBalance(domainContract.address);
   console.log("Contract balance:", hre.ethers.utils.formatEther(balance));
@@ -41,7 +41,7 @@ const main = async () => {
   console.log("Balance of owner after withdrawal:", hre.ethers.utils.formatEther(ownerBalance));
 
   // Trying to set a record that doesn't belong to me!
-  // txn = await domainContract.connect(randomPerson).setRecord("peanut", "Haha my domain now!");
+  // txn = await domainContract.connect(randomPerson).setRecord("tetris", "Haha my domain now!");
   // await txn.wait();
 };
 

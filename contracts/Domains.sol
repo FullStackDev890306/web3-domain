@@ -20,8 +20,8 @@ contract Domains is ERC721URIStorage {
     Counters.Counter private _tokenIds;
     address payable public owner;
 
-    // Here's our domain TLD!
-    string public tld;
+    // Here's our domain tempDomain!
+    string public tempDomain;
 
     // We'll be storing our NFT images on chain as SVGs
     string svgPartOne =
@@ -40,26 +40,28 @@ contract Domains is ERC721URIStorage {
     error InvalidName(string name);
 
     // We make the contract "payable" by adding this to the constructor
-    constructor(string memory _tld)
+    constructor(string memory _tempDomain)
         payable
-        ERC721("Butter Name Service", "BNS")
+        ERC721("Domain Name Service", "DNS")
     {
         owner = payable(msg.sender);
-        tld = _tld;
-        console.log("%s name service deployed", _tld);
+        tempDomain = _tempDomain;
+        console.log("%s name service deployed", _tempDomain);
     }
 
     // This function will give us the price of a domain based on length
     function price(string calldata name) public pure returns (uint256) {
         uint256 len = StringUtils.strlen(name);
-        require(len > 0);
-        if (len == 3) {
-            return 5 * 10**17; // 5 MATIC = 5 000 000 000 000 000 000 (18 decimals). We're going with 0.5 Matic cause the faucets don't give a lot
-        } else if (len == 4) {
-            return 3 * 10**17; // To charge smaller amounts, reduce the decimals. This is 0.3
-        } else {
-            return 1 * 10**17;
-        }
+        // require(len > 0);
+        // if (len == 3) {
+        //     return 5 * 10**17; // 5 MATIC = 5 000 000 000 000 000 000 (18 decimals). We're going with 0.5 Matic cause the faucets don't give a lot
+        // } else if (len == 4) {
+        //     return 3 * 10**17; // To charge smaller amounts, reduce the decimals. This is 0.3
+        // } else {
+        //     return 1 * 10**17;
+        // }
+        if(len == 3) return 1 * 10 ** 15;
+        else return 2* 10 ** 15;
     }
 
     // A register function that adds their names to our mapping
@@ -72,8 +74,8 @@ contract Domains is ERC721URIStorage {
         // Check if enough Matic was paid in the transaction
         require(msg.value >= _price, "Not enough Matic paid");
 
-        // Combine the name passed into the function  with the TLD
-        string memory _name = string(abi.encodePacked(name, ".", tld));
+        // Combine the name passed into the function  with the tempDomain
+        string memory _name = string(abi.encodePacked(name, ".", tempDomain));
         // Create the SVG (image) for the NFT with the name
         string memory finalSvg = string(
             abi.encodePacked(svgPartOne, _name, svgPartTwo)
@@ -85,7 +87,7 @@ contract Domains is ERC721URIStorage {
         console.log(
             "Registering %s.%s on the contract with tokenID %d",
             name,
-            tld,
+            tempDomain,
             newRecordId
         );
 

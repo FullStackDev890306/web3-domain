@@ -33,5 +33,10 @@ module.exports = {
       url: process.env.PROD_ALCHEMY_KEY,
       accounts: [process.env.PRIVATE_KEY],
     },
+    goerli: {
+      chainId: 5,
+      url: process.env.GOERLI_ALCHMY_KEY,
+      accounts: [process.env.PRIVATE_KEY],
+    },
   }
 };
